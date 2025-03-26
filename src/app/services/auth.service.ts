@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable,BehaviorSubject } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root',
@@ -8,10 +9,13 @@ import { Observable } from 'rxjs';
 export class AuthService {
   constructor(private http: HttpClient) {}
 
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+
   login(email: string, password: string): Observable<any> {
     return new Observable(observer => {
       const cachedUsers = JSON.parse(localStorage.getItem('users') || 'null');
-
+      this.isAuthenticatedSubject.next(true);
       if (cachedUsers && Array.isArray(cachedUsers)) {
         this.processLogin(cachedUsers, email, password, observer);
       } else {
@@ -28,6 +32,11 @@ export class AuthService {
         });
       }
     });
+    
+  }
+
+  getUser(): any {
+    return JSON.parse(localStorage.getItem('currentUser') || '{}');
   }
 
   private processLogin(users: any[], email: string, password: string, observer: any) {
@@ -76,15 +85,19 @@ export class AuthService {
       console.warn('❌ Aucune correspondance email/mot de passe');
       observer.next(null);
       observer.complete();
+      
     }
+
   }
 
   logout() {
+    this.isAuthenticatedSubject.next(false);
     localStorage.removeItem('userRole');
     localStorage.removeItem('userId');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('users');
     localStorage.removeItem('membres');
     localStorage.removeItem('gestionnaires');
+    
   }
 }

@@ -80,12 +80,11 @@ export class DashboardMembreComponent implements OnInit {
   }
 
   goToProfil() {
-    this.router.navigate(['/profil']);
+    this.router.navigate(['/profil/edit']);
   }
 
-  logout() {
-    localStorage.clear();
-    this.router.navigate(['/auth']);
+  goToProfilView() {
+    this.router.navigate(['/profil']);
   }
 
   trackByNom(index: number, projet: any): string {

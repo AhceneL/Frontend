@@ -12,6 +12,7 @@ import { DetailTacheGestComponent } from './components/detail-tache-gest/detail-
 import { ModificationTacheComponent } from './components/modification-tache/modification-tache.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { ProfileComponent } from './components/profile/profile.component'; // ✅ Décommenté pour le profil
+import { ProfileViewComponent } from './components/profile-view/profile-view.component';
 import { AuthGuard } from './guards/auth.guard'; // ✅ Import du Guard
 import  { SuiviProgressionComponent } from './components/suivi-progression/suivi-progression.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
@@ -48,7 +49,8 @@ export const routes: Routes = [
 
   //  Autres routes protégées
   { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
-  { path: 'profil', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'profil/edit', component: ProfileComponent, canActivate: [AuthGuard] },
+  { path: 'profil', component: ProfileViewComponent, canActivate: [AuthGuard] }, // Editable profile page
   { path: 'dashboard/gestionnaire/suivi', component: SuiviProgressionComponent },
   //  Redirection pour toute route inconnue
   { path: '403', component: PageForbiddenComponent },

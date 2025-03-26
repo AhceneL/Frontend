@@ -10,5 +10,5 @@ import { HeaderComponent } from './components/header/header.component'; // ✅ I
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'xxxxxx';
+  title = 'Collab';
 }

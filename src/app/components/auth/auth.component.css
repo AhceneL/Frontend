@@ -1,7 +1,3 @@
-/* ✅ Cacher le header global */
-::ng-deep app-header {
-  display: none !important;
-}
 
 /* Page complète */
 .auth-page {
@@ -17,7 +13,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #fefde6;
+  background-color: #ffffff;
   padding: 16px 30px;
   border-bottom: 1px solid #ddd;
 }
