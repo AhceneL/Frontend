@@ -1,18 +1,32 @@
-<header class="header-container">
-  <img src="assets/logo.jpeg" alt="ProjectCollab Logo" class="logo" />
-
-  <div class="header-actions">
-    <!-- Icône Notifications -->
-    <button class="icon-button" (click)="goToNotifications()">
-      🔔 Notifications
+<ng-container *ngIf="isAuthenticated$ | async; else unauthenticated">
+  <header  class="header-container">
+    <button class="logo" (click)="goToDashboard()">
+      <img src="assets/logo.jpeg" alt="ProjectCollab Logo" />
     </button>
+    <div class="header-actions">
+      <!-- Icône Notifications -->
+      <button class="icon-button" (click)="goToNotifications()">
+        🔔 Notifications
+      </button>
+  
+      <!-- Icône Profil -->
+      <button class="icon-button" (click)="goToProfile()">
+        👤 Profil
+      </button>
+  
+      <!-- Bouton Déconnexion -->
+      <button class="logout-button" (click)="logout()">Se Déconnecter</button>
+    </div>
+  </header>
+</ng-container>
 
-    <!-- Icône Profil -->
-    <button class="icon-button" (click)="goToProfile()">
-      👤 Profil
-    </button>
+<ng-template #unauthenticated>
+  <header  class="header-container">
+    <img src="assets/logo.jpeg" alt="Logo ProjectCollab" class="logo" />
+    <button *ngIf="LastRoute==='rg'" class="register-button"  (click)="goToRegister()">Créer un compte</button>
+    <button *ngIf="LastRoute==='au'" class="register-button"  (click)="goToLogin()">Se connecter</button>
+  </header>
+  
+</ng-template>
 
-    <!-- Bouton Déconnexion -->
-    <button class="logout-button" (click)="logout()">Se Déconnecter</button>
-  </div>
-</header>
+

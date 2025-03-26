@@ -34,7 +34,7 @@ export class ProfileComponent implements OnInit {
   }
 
   cancel(): void {
-    this.user = { ...this.originalUser };
+    this.router.navigate(['dashboard/'+localStorage.getItem('userRole')]);
   }
 
   logout(): void {

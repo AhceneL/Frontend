@@ -4,14 +4,28 @@
       <img [src]="gestionnaireData?.avatar || 'assets/avatar-par-defaut.jpg'" alt="Avatar" class="avatar" />
       <p class="username">{{ gestionnaireData?.nom || 'Utilisateur' }}</p>
       <span class="role">Gestionnaire</span>
-      <button class="profile-button" (click)="goToProfil()">Gérer le Profil</button>
+      <button class="profile-button" (click)="goToProfilEdit()">Gérer le Profil</button>
     </div>
 
     <div class="project-actions">
       <h3>Gérer les projets</h3>
       <button class="action-button" (click)="goToCreationProjet()">Créer un nouveau projet</button>
       <button class="action-button" (click)="goToSuiviProgression()">Suivre la progression</button>
-      <button class="action-button" disabled>Inviter des membres</button>
+      <div class="gestionnaire-container">
+        <!-- Add Member Button (Initially shown) -->
+        <button *ngIf="!showForm" class="action-button" (click)="toggleForm()">Ajouter Membre</button>
+      
+        <!-- Form for Adding Member (When button is clicked) -->
+        <div *ngIf="showForm" class="member-form">
+          <input type="text" [(ngModel)]="newMemberName" class="form-control mb-2" placeholder="Nom du membre" />
+          <input type="email" [(ngModel)]="newMemberEmail" class="form-control mb-2" placeholder="Email du membre" />
+      
+          <div class="form-actions">
+            <button class="btn btn-success" (click)="addMember()">Confirmer</button>
+            <button class="btn btn-secondary" (click)="toggleForm()">Annuler</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -29,6 +43,4 @@
       <p>Aucun projet disponible pour ce gestionnaire.</p>
     </ng-template>
   </div>
-
-  <button class="logout-button" (click)="logout()">Se Déconnecter</button>
 </div>

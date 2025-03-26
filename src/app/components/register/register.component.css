@@ -1,7 +1,4 @@
-/* ✅ Masquer le header global uniquement sur cette page */
-::ng-deep app-header {
-  display: none !important;
-}
+
 
 /* Page */
 .register-page {
@@ -17,7 +14,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #fefde6;
+  background-color: #ffffff;
   padding: 16px 30px;
   border-bottom: 1px solid #ddd;
 }

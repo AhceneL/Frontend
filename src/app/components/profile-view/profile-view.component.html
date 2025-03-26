@@ -1,0 +1,15 @@
+<div class="profile-page">
+    <div class="profile-card">
+      <img [src]="user?.avatar || 'assets/avatar-par-defaut.jpg'" class="profile-avatar" alt="Avatar" />
+  
+      <h2 class="profile-name">{{ user?.nom || 'Utilisateur' }}</h2>
+      <p class="profile-email">{{ user?.email }}</p>
+  
+      <div class="profile-info">
+        <p><strong>Numéro de téléphone:</strong> {{ user?.telephone || 'Non renseigné' }}</p>
+      </div>
+  
+      <button class="edit-btn" (click)="goToEditProfile()">Modifier le profil</button>
+    </div>
+  </div>
+  

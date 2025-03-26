@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard-gestionnaire',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,FormsModule],
   templateUrl: './dashboard-gestionnaire.component.html',
   styleUrls: ['./dashboard-gestionnaire.component.css']
 })
@@ -81,9 +82,52 @@ export class DashboardGestionnaireComponent implements OnInit {
   goToProfil(): void {
     this.router.navigate(['/profil']);
   }
-
-  logout(): void {
-    localStorage.clear();
-    this.router.navigate(['/auth']);
+  
+  goToProfilEdit(): void {
+    this.router.navigate(['/profil/edit']);
   }
+  
+  showForm = false; // To toggle between form and button
+  newMemberName = ''; // For storing the name of the new member
+  newMemberEmail = ''; // For storing the email of the new member
+
+  // Function to toggle form visibility
+  toggleForm(): void {
+    this.showForm = !this.showForm;
+    if (!this.showForm) {
+      // Reset the fields when form is hidden
+      this.newMemberName = '';
+      this.newMemberEmail = '';
+    }
+  }
+
+  // Function to handle member addition
+  addMember(): void {
+    if (!this.newMemberName.trim() || !this.newMemberEmail.trim()) {
+      alert("❌ Veuillez entrer un nom et une adresse e-mail valides.");
+      return;
+    }
+
+    // Simulate sending an email with member data
+    const emailData = {
+      to: this.newMemberEmail,
+      subject: 'Bienvenue dans l\'équipe!',
+      body: `Bonjour ${this.newMemberName},\n\nBienvenue dans l'équipe! Nous sommes ravis de vous avoir avec nous.\n\nCordialement,\nL'équipe.`
+    };
+
+    const blob = new Blob([JSON.stringify(emailData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `email_${this.newMemberName}.json`;
+    a.click();
+    
+    URL.revokeObjectURL(url);
+    alert('📩 Simulation d\'envoi d\'email réussie!');
+
+    // Hide the form after adding the member
+    this.toggleForm();
+  }
+
 }
