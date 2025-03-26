@@ -14,12 +14,14 @@ import { NotificationsComponent } from './components/notifications/notifications
 import { ProfileComponent } from './components/profile/profile.component'; // ✅ Décommenté pour le profil
 import { AuthGuard } from './guards/auth.guard'; // ✅ Import du Guard
 import  { SuiviProgressionComponent } from './components/suivi-progression/suivi-progression.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { PageForbiddenComponent } from './components/page-forbidden/page-forbidden.component';
 export const routes: Routes = [
   { path: '', redirectTo: 'auth', pathMatch: 'full' },
   { path: 'auth', component: AuthComponent },
   { path: 'register', component: RegisterComponent },
 
-  // ✅ Routes protégées pour les membres
+  //  Routes protégées pour les membres
   {
     path: 'dashboard/membre',
     canActivate: [AuthGuard],
@@ -30,7 +32,7 @@ export const routes: Routes = [
     ]
   },
 
-  // ✅ Routes protégées pour les gestionnaires
+  //  Routes protégées pour les gestionnaires
   {
     path: 'dashboard/gestionnaire',
     canActivate: [AuthGuard],
@@ -44,10 +46,13 @@ export const routes: Routes = [
     ]
   },
 
-  // ✅ Autres routes protégées
+  //  Autres routes protégées
   { path: 'notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
   { path: 'profil', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'dashboard/gestionnaire/suivi', component: SuiviProgressionComponent },
-  // ✅ Redirection pour toute route inconnue
-  { path: '**', redirectTo: 'auth' }
+  //  Redirection pour toute route inconnue
+  { path: '403', component: PageForbiddenComponent },
+  { path: '', redirectTo: 'auth' , pathMatch:`full` },
+  { path: '**', component: PageNotFoundComponent , title: 'Page introuvable' }
+
 ];
