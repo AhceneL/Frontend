@@ -1,0 +1,52 @@
+<div class="detail-container" *ngIf="projet">
+  <!-- En-tête -->
+  <header class="project-header">
+    <h2>{{ projet.nom }}</h2>
+    <p>{{ projet.description || 'Aucune description fournie.' }}</p>
+
+    <div class="project-meta">
+      <span>📅 Début : {{ projet.dateDebut }}</span>
+      <span>🗓 Échéance : {{ projet.dateEcheance }}</span>
+    </div>
+
+    <div class="header-actions">
+      <button class="danger" (click)="deleteProject()">🗑 Supprimer</button>
+      <button (click)="goToDashboard()">⬅ Retour</button>
+    </div>
+  </header>
+
+  <!-- Membres -->
+  <section class="project-section">
+    <h3>👥 Membres assignés</h3>
+    <ul>
+      <li *ngFor="let member of projet.membres">{{ member }}</li>
+    </ul>
+    <button (click)="addMember()">➕ Ajouter un membre</button>
+  </section>
+
+  <!-- Tâches -->
+  <section class="project-section">
+    <h3>✅ Tâches</h3>
+    <ul>
+      <li *ngFor="let task of projet.taches">
+        <strong>{{ task.nom }}</strong> — {{ task.statut }} — 🔥 {{ task.priorite }} — 🗓 {{ task.dateEcheance }}
+        <br />
+        <small>👤 Assignée à : {{ task.assigneA || 'Non défini' }}</small>
+        <div>
+          <button (click)="goToModificationTache(task)">✏️ Modifier</button>
+          <button (click)="goToDetailTache(task)">🔍 Voir Détail</button>
+        </div>
+      </li>
+    </ul>
+    <button (click)="addTask()">➕ Ajouter une tâche</button>
+  </section>
+
+  <!-- Déconnexion -->
+  <footer>
+    <button class="logout-button" (click)="logout()">🚪 Déconnexion</button>
+  </footer>
+</div>
+
+<ng-template [ngIf]="!projet">
+  <p>⚠️ Projet introuvable.</p>
+</ng-template>

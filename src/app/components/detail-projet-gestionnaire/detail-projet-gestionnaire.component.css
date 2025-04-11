@@ -1,0 +1,153 @@
+/* Conteneur principal */
+.detail-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* En-tête */
+.project-header {
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.project-header h2 {
+  font-size: 2.4rem;
+  color: #2c3e50;
+  margin-bottom: 0.3rem;
+}
+
+.project-header p {
+  font-size: 1rem;
+  color: #7f8c8d;
+}
+
+.project-meta {
+  font-size: 0.95rem;
+  color: #888;
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 2rem;
+}
+
+/* Boutons dans l'en-tête */
+.header-actions {
+  margin-top: 1rem;
+}
+
+.header-actions button {
+  margin-right: 1rem;
+}
+
+/* Sections */
+.project-section {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: #f4f6f9;
+  border-radius: 12px;
+  border-left: 6px solid #007acc;
+}
+
+.project-section h3 {
+  margin-bottom: 1rem;
+  color: #2c3e50;
+  font-size: 1.3rem;
+}
+
+/* Membres */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1rem 0;
+}
+
+ul li {
+  background-color: #ffffff;
+  border-left: 4px solid #3498db;
+  padding: 0.6rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: 6px;
+  color: #333;
+}
+
+/* Tâches */
+ul li > div {
+  margin-top: 0.4rem;
+}
+
+ul li button {
+  margin-right: 0.5rem;
+  margin-top: 0.3rem;
+}
+
+.task-item strong {
+  font-size: 1.1rem;
+  display: block;
+  color: #2d3436;
+}
+
+.task-meta {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Boutons généraux */
+button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background-color: #2980b9;
+  color: white;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #1f618d;
+}
+
+/* Bouton danger */
+.danger {
+  background-color: #e74c3c;
+}
+
+.danger:hover {
+  background-color: #c0392b;
+}
+
+/* Bouton déconnexion */
+.logout-button {
+  background-color: #7f8c8d;
+}
+
+.logout-button:hover {
+  background-color: #636e72;
+  color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .detail-container {
+    padding: 1rem;
+  }
+
+  .project-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  button {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .header-actions button {
+    margin-bottom: 0.5rem;
+  }
+}

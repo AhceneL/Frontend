@@ -1,0 +1,49 @@
+[
+  {
+    "id": "g1",
+    "nom": "Gestionnaire Démo",
+    "email": "gestionnaire@example.com",
+    "avatar": "assets/avatars/gestionnaire.jpg",
+    "projets": [
+      {
+        "nom": "Projet Alpha",
+        "description": "Développement de l’interface utilisateur pour le module principal.",
+        "dateDebut": "2025-03-01",
+        "dateEcheance": "2025-04-15",
+        "membres": ["m1"],
+        "taches": [
+          {
+            "nom": "Compléter le front-end",
+            "statut": "en cours",
+            "priorite": "haute",
+            "dateEcheance": "2025-04-01",
+            "assignéÀ": "m1"
+          },
+          {
+            "nom": "Rédiger la documentation",
+            "statut": "pas commencé",
+            "priorite": "moyenne",
+            "dateEcheance": "2025-04-05",
+            "assignéÀ": "m1"
+          }
+        ]
+      },
+      {
+        "nom": "Projet Beta",
+        "description": "Tests finaux et livraison du projet.",
+        "dateDebut": "2025-02-15",
+        "dateEcheance": "2025-03-30",
+        "membres": ["m1"],
+        "taches": [
+          {
+            "nom": "Valider les tests",
+            "statut": "terminé",
+            "priorite": "basse",
+            "dateEcheance": "2025-03-30",
+            "assignéÀ": "m1"
+          }
+        ]
+      }
+    ]
+  }
+]

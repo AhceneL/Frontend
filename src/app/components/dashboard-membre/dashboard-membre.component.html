@@ -1,0 +1,46 @@
+<div class="dashboard-container">
+  <!-- Sidebar avec profil utilisateur -->
+  <div class="sidebar">
+    <div class="profile">
+      <img [src]="membreData?.avatar || 'assets/avatar-par-defaut.jpg'" alt="Avatar Membre" class="avatar" />
+      <p class="username">{{ membreData?.nom || 'Utilisateur' }}</p>
+      <span class="role">Membre</span>
+      <button class="profile-button" (click)="goToProfil()">Gérer le Profil</button>
+    </div>
+  </div>
+
+  <!-- Section principale avec les projets -->
+  <div class="projects-section">
+    <h2>Mes projets</h2>
+
+    <!-- Liste des projets -->
+    <div class="projects-list" *ngIf="isArray(projets) && projets.length > 0; else aucunProjet">
+      <div
+        class="project-card"
+        *ngFor="let projet of projets; trackBy: trackByNom"
+        [ngClass]="getClassForStatut(getStatutProjetPourMembre(projet.taches || []))"
+      >
+        <p class="project-name">{{ projet.nom }}</p>
+        <p class="project-description">{{ projet.description || 'Aucune description fournie.' }}</p>
+
+        <p class="project-status">
+          Statut :
+          <span class="status-label" [ngClass]="getClassForStatut(getStatutProjetPourMembre(projet.taches || []))">
+            {{ getStatutProjetPourMembre(projet.taches || []) }}
+          </span>
+        </p>
+
+        <p class="task-count">
+          Nombre de tâches : {{ isArray(projet.taches) ? projet.taches.length : 0 }}
+        </p>
+
+        <button class="detail-button" (click)="goToDetailProjet(projet.nom)">Voir Détails</button>
+      </div>
+    </div>
+
+    <!-- Message si aucun projet -->
+    <ng-template #aucunProjet>
+      <p class="no-project-message">Aucun projet disponible pour ce membre.</p>
+    </ng-template>
+  </div>
+</div>

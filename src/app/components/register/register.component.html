@@ -1,0 +1,34 @@
+<div class="register-page">
+  <!-- ✅ Formulaire d'inscription -->
+  <div class="form-container">
+    <h1 class="title">Créer un compte</h1>
+    <p class="subtitle">Remplissez le formulaire pour vous inscrire.</p>
+
+    <form (submit)="onSubmit()" class="register-form">
+      <div class="input-group">
+        <label for="fullname">Nom complet</label>
+        <input type="text" id="fullname" [(ngModel)]="nom" name="fullname" required />
+      </div>
+
+      <div class="input-group">
+        <label for="email">Adresse courriel</label>
+        <input type="email" id="email" [(ngModel)]="email" name="email" required />
+      </div>
+
+      <div class="input-group">
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" [(ngModel)]="password" name="password" required />
+      </div>
+
+      <div class="input-group">
+        <label for="role">Type de compte</label>
+        <select id="role" [(ngModel)]="role" name="role" required>
+          <option value="membre">Membre</option>
+          <option value="gestionnaire">Gestionnaire</option>
+        </select>
+      </div>
+
+      <button type="submit" class="register-button">S'inscrire</button>
+    </form>
+  </div>
+</div>

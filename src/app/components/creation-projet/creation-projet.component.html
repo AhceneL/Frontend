@@ -1,0 +1,71 @@
+<div class="create-project-container">
+  <!-- En-tête -->
+  <div class="header">
+    <img src="assets/logo.jpeg" alt="ProjectCollab Logo" class="logo" />
+    <h2>Créer un nouveau projet</h2>
+    <div class="actions">
+      <button class="save-button" (click)="saveProject()">💾 Enregistrer</button>
+      <button class="cancel-button" (click)="cancel()">❌ Annuler</button>
+    </div>
+  </div>
+
+  <!-- Formulaire -->
+  <form class="project-form" (ngSubmit)="saveProject()">
+    <!-- Nom du projet -->
+    <div class="input-group">
+      <label for="project-name">Nom du projet</label>
+      <input
+        type="text"
+        id="project-name"
+        name="projectName"
+        [(ngModel)]="projectName"
+        placeholder="Entrez le nom du projet"
+        required />
+    </div>
+
+    <!-- Description -->
+    <div class="input-group">
+      <label for="project-description">Description du projet</label>
+      <textarea
+        id="project-description"
+        name="projectDescription"
+        [(ngModel)]="projectDescription"
+        placeholder="Ajoutez une description"
+        required></textarea>
+    </div>
+
+    <!-- Dates -->
+    <div class="date-group">
+      <div class="input-group">
+        <label for="start-date">Date de début</label>
+        <input
+          type="date"
+          id="start-date"
+          name="startDate"
+          [(ngModel)]="startDate"
+          required />
+      </div>
+
+      <div class="input-group">
+        <label for="end-date">Date d'échéance</label>
+        <input
+          type="date"
+          id="end-date"
+          name="endDate"
+          [(ngModel)]="endDate"
+          required />
+      </div>
+    </div>
+
+    <!-- Membres -->
+    <div class="input-group">
+      <label for="add-members">Ajout des membres (séparés par virgule)</label>
+      <input
+        type="text"
+        id="add-members"
+        name="members"
+        [(ngModel)]="members"
+        placeholder="ex: membre1@example.com, membre2@example.com" />
+    </div>
+  </form>
+</div>

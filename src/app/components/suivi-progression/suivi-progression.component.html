@@ -1,0 +1,23 @@
+<div class="suivi-container">
+  <h2>📊 Suivi de la progression des projets</h2>
+
+  <div *ngFor="let projet of projets" class="projet-card">
+    <h3>{{ projet.nom }}</h3>
+    <p class="description">{{ projet.description }}</p>
+
+    <div class="progress-bar-container">
+      <div class="progress-bar" [style.width.%]="projet.progression"></div>
+    </div>
+    <p class="progress-text">Progression : <strong>{{ projet.progression }}%</strong></p>
+
+    <ul class="task-list">
+      <li *ngFor="let tache of projet.taches" [ngClass]="getStatutClass(tache.statut)">
+        <div class="task-title">📌 <strong>{{ tache.nom }}</strong></div>
+        <div class="task-details">
+          🛠 {{ tache.statut }} &nbsp;|&nbsp; 🔥 {{ tache.priorite }} &nbsp;|&nbsp; 📅 {{ tache.dateEcheance }}
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+

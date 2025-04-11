@@ -1,0 +1,32 @@
+<div class="profile-page">
+  <div class="profile-card">
+    <img [src]="user?.avatar || 'assets/avatar-par-defaut.jpg'" class="profile-avatar" alt="Avatar" />
+
+    <h2 class="profile-name">{{ user?.nom || 'Utilisateur' }}</h2>
+    <p class="profile-email">{{ user?.email }}</p>
+
+    <form class="profile-form">
+      <div class="input-group">
+        <label>Nom d’utilisateur</label>
+        <input [(ngModel)]="user.nom" name="nom" type="text" />
+      </div>
+
+      <div class="input-group">
+        <label>Mot de passe</label>
+        <input [(ngModel)]="user.password" name="password" type="password" />
+      </div>
+
+      <div class="input-group">
+        <label>Numéro de téléphone</label>
+        <input [(ngModel)]="user.telephone" name="telephone" type="text" />
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="save-btn" (click)="saveChanges()">Enregistrer les modifications</button>
+        <button type="button" class="cancel-btn" (click)="cancel()">Annuler</button>
+      </div>
+    </form>
+  </div>
+
+  <button class="logout-btn" (click)="logout()">Se Déconnecter</button>
+</div>

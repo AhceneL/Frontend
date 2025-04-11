@@ -1,0 +1,34 @@
+<div class="task-modification-container" *ngIf="tache">
+  <!-- En-tête -->
+  <div class="header">
+    <img src="assets/logo.png" alt="ProjectCollab Logo" class="logo" />
+    <button class="btn-back" (click)="cancel()">⬅ Retour au projet</button>
+  </div>
+
+  <!-- Formulaire -->
+  <div class="task-form">
+    <h2>Modifier la tâche : {{ taskTitle }}</h2>
+
+    <label for="taskTitle">Titre</label>
+    <input id="taskTitle" type="text" [(ngModel)]="taskTitle" required />
+
+    <label for="taskDescription">Description</label>
+    <textarea id="taskDescription" [(ngModel)]="taskDescription" rows="4"></textarea>
+
+    <label>État</label>
+    <div class="status-selection">
+      <label><input type="radio" name="status" value="En cours" [(ngModel)]="taskStatus" /> En cours</label>
+      <label><input type="radio" name="status" value="Terminé" [(ngModel)]="taskStatus" /> Terminé</label>
+      <label><input type="radio" name="status" value="En attente" [(ngModel)]="taskStatus" /> En attente</label>
+    </div>
+
+    <div class="buttons">
+      <button class="save-task-btn" (click)="saveTask()">💾 Enregistrer</button>
+      <button class="cancel-btn" (click)="cancel()">❌ Annuler</button>
+    </div>
+  </div>
+</div>
+
+<ng-template [ngIf]="!tache">
+  <p style="text-align: center; color: red; margin-top: 2rem;">❌ Tâche introuvable.</p>
+</ng-template>

@@ -1,0 +1,18 @@
+[
+  {
+    "email": "gestionnaire@example.com",
+    "password": "password123",
+    "role": "gestionnaire",
+    "id": "g1",
+    "nom": "Gestionnaire Démo",
+    "avatar": "assets/avatars/gestionnaire.jpg"
+  },
+  {
+    "email": "membre@example.com",
+    "password": "mem123",
+    "role": "membre",
+    "id": "m1",
+    "nom": "Membre Démo",
+    "avatar": "assets/avatars/membre.png"
+  }
+]

@@ -1,0 +1,40 @@
+<div class="task-creation-container">
+  <!-- En-tête avec logo et retour au tableau de bord -->
+  <div class="header">
+    <img src="assets/logo.png" alt="ProjectCollab Logo" class="logo" />
+    <button class="btn-back" (click)="goToDashboard()">Tableau de Bord</button>
+  </div>
+
+  <!-- Formulaire de création de tâche -->
+  <div class="task-form">
+    <h2>Ajouter une tâche</h2>
+
+    <!-- Champs : Titre et Description -->
+    <label for="taskTitle">Titre de la tâche</label>
+    <input type="text" id="taskTitle" [(ngModel)]="taskTitle" placeholder="Entrez un titre" required />
+
+    <label for="taskDescription">Description</label>
+    <textarea id="taskDescription" [(ngModel)]="taskDescription" placeholder="Entrez une description"></textarea>
+
+    <!-- Sélection du membre assigné (Dynamique) -->
+    <label for="assignedMember">Assigner des Membres</label>
+    <select id="assignedMember" [(ngModel)]="assignedMember">
+      <option value="">-- Sélectionner un membre --</option>
+      <option *ngFor="let member of members" [value]="member">{{ member }}</option>
+    </select>
+
+    <!-- Sélection de l'état -->
+    <label>État</label>
+    <div class="status-selection">
+      <label><input type="radio" name="status" value="En cours" [(ngModel)]="taskStatus" /> En cours</label>
+      <label><input type="radio" name="status" value="Terminé" [(ngModel)]="taskStatus" /> Terminé</label>
+      <label><input type="radio" name="status" value="En attente" [(ngModel)]="taskStatus" /> En attente</label>
+    </div>
+
+    <!-- Boutons -->
+    <div class="buttons">
+      <button class="add-task-btn" (click)="addTask()">Ajouter une tâche</button>
+      <button class="cancel-btn" (click)="cancel()">Annuler</button>
+    </div>
+  </div>
+</div>

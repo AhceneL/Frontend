@@ -1,0 +1,175 @@
+.task-detail-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.task-header h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.task-header p {
+  margin: 0.4rem 0;
+}
+
+.task-header input,
+.task-header textarea {
+  width: 100%;
+  padding: 0.6rem;
+  margin-top: 0.3rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.status-update {
+  margin: 1.5rem 0;
+}
+
+.status-update p {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.status-update button {
+  margin-right: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #e0e0e0;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.status-update button.active {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.status-update button:hover {
+  opacity: 0.85;
+}
+
+.comments-section {
+  margin-top: 2rem;
+}
+
+.comments-section textarea {
+  width: 100%;
+  height: 80px;
+  padding: 0.6rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 0.6rem;
+}
+
+.comments-section button {
+  background-color: #007bff;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.comments-section button:hover {
+  background-color: #0056b3;
+}
+
+/* Liste des anciens commentaires */
+.comment-list {
+  margin-top: 1rem;
+  padding: 0.8rem 1rem;
+  background-color: #f9f9f9;
+  border-left: 4px solid #007bff;
+  border-radius: 5px;
+}
+
+.comment-list ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.comment-list li {
+  padding: 0.5rem 0.8rem;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.95rem;
+}
+
+.comment-list li:last-child {
+  border-bottom: none;
+}
+
+.file-upload {
+  margin-top: 2rem;
+}
+
+.file-upload input[type="file"] {
+  margin-top: 0.5rem;
+}
+
+.file-upload em {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.actions {
+  margin-top: 2.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.save-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.dashboard-button {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.logout-button {
+  background-color: #dc3545;
+  color: white;
+}
+
+.actions button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.actions button:hover {
+  opacity: 0.85;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .task-detail-container {
+    padding: 1rem;
+  }
+
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+}

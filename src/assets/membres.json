@@ -1,0 +1,34 @@
+[
+  {
+    "id": "m1",
+    "nom": "Membre Démo",
+    "email": "membre@example.com",
+    "avatar": "assets/avatars/membre.jpg",
+    "projets": [
+      {
+        "nom": "Projet Test - UI",
+        "description": "Prototype d’interface pour la version alpha.",
+        "taches": [
+          {
+            "nom": "Créer le dashboard",
+            "statut": "en cours",
+            "priorite": "haute",
+            "dateEcheance": "2025-04-05"
+          },
+          {
+            "nom": "Ajouter les composants Angular",
+            "statut": "pas commencé",
+            "priorite": "moyenne",
+            "dateEcheance": "2025-04-10"
+          },
+          {
+            "nom": "Effectuer les tests",
+            "statut": "terminé",
+            "priorite": "basse",
+            "dateEcheance": "2025-04-01"
+          }
+        ]
+      }
+    ]
+  }
+]

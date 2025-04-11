@@ -1,0 +1,53 @@
+<div class="detail-container">
+  <!-- En-tête -->
+
+
+  <!-- Contenu -->
+  <div class="content" *ngIf="membreData">
+    <div class="layout">
+      <!-- Sélecteur de projet -->
+      <div class="project-selector">
+        <label for="project-select"><strong>Projet :</strong></label>
+        <select id="project-select" [(ngModel)]="projetSelectionneNom" (change)="getTachesFiltrees()">
+          <option *ngFor="let projet of projets" [value]="projet.nom">{{ projet.nom }}</option>
+        </select>
+
+      </div>
+
+      <!-- Filtres -->
+      <div class="filters">
+        <h3>Filtres</h3>
+        <label><input type="radio" name="filter" (change)="setFiltre('prioritaire')" /> Prioritaire</label>
+        <label><input type="radio" name="filter" (change)="setFiltre('semaine')" /> À rendre cette semaine</label>
+        <label><input type="radio" name="filter" (change)="setFiltre('termine')" /> Terminé</label>
+        <label><input type="radio" name="filter" (change)="setFiltre('')" checked /> Tous</label>
+      </div>
+
+      <!-- Tâches -->
+      <div class="tasks">
+        <div *ngIf="getTachesFiltrees().length > 0; else aucuneTache">
+          <div
+            class="task-card"
+            *ngFor="let tache of getTachesFiltrees(); trackBy: trackByNom"
+            [ngClass]="{
+              'high-priority': tache.priorite === 'haute',
+              'medium-priority': tache.priorite === 'moyenne',
+              'low-priority': tache.priorite === 'basse'
+            }"
+          >
+            <div class="task-content">
+              <p><strong>📅 Échéance:</strong> {{ tache.dateEcheance }}</p>
+              <p><strong>🚩 Priorité:</strong> {{ tache.priorite | titlecase }}</p>
+              <p><strong>📌 Statut:</strong> {{ tache.statut }}</p>
+            </div>
+            <button class="detail-button" (click)="goToDetailTache(tache.nom)">Voir Détails</button>
+          </div>
+        </div>
+
+        <ng-template #aucuneTache>
+          <p class="no-task">Aucune tâche ne correspond à ce filtre pour ce projet.</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,132 @@
+/* Global container */
+.task-creation-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #ddd;
+}
+
+.header img {
+  height: 40px;
+}
+
+.btn-back {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-back:hover {
+  background-color: #0056b3;
+}
+
+/* Form */
+.task-form {
+  margin-top: 20px;
+}
+
+/* Labels */
+.task-form label {
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+  color: #333;
+}
+
+/* Inputs & Textarea */
+.task-form input,
+.task-form textarea,
+.task-form select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.task-form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Status Selection */
+.status-selection {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.status-selection label {
+  background-color: #f1f1f1;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.status-selection input {
+  margin-right: 5px;
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.add-task-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-task-btn:hover {
+  background-color: #218838;
+}
+
+.cancel-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cancel-btn:hover {
+  background-color: #c82333;
+}
+
+/* Responsive */
+@media screen and (max-width: 500px) {
+  .task-creation-container {
+    padding: 15px;
+  }
+
+  .status-selection {
+    flex-direction: column;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
