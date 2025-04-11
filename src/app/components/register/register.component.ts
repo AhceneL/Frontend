@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service'; // adapte le chemin si besoin
 
 @Component({
   selector: 'app-register',
@@ -10,40 +11,33 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
-  fullname: string = '';
+  nom: string = '';
+  prenom: string = '';
   email: string = '';
   password: string = '';
   role: string = 'membre';
 
-  constructor(private router: Router) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   onSubmit() {
     const newUser = {
-      fullname: this.fullname,
       email: this.email,
+      nom: this.nom,
+      prenom: this.prenom,
       password: this.password,
       role: this.role
     };
 
-    // 🔍 Récupérer les utilisateurs existants
-    let users = JSON.parse(localStorage.getItem('users') || '[]');
-
-    // ❗ Vérifier si l'email est déjà utilisé
-    const emailExists = users.some((u: any) => u.email === newUser.email);
-
-    if (emailExists) {
-      alert("❌ Cet email est déjà utilisé.");
-      return;
-    }
-
-    // ✅ Ajouter le nouvel utilisateur
-    users.push(newUser);
-
-    // 💾 Enregistrer dans le localStorage
-    localStorage.setItem('users', JSON.stringify(users));
-
-    alert("✅ Inscription réussie !");
-    this.router.navigate(['/auth']);
+    this.authService.register(newUser).subscribe({
+      next: () => {
+        alert('✅ Inscription réussie !');
+        this.router.navigate(['/auth']);
+      },
+      error: (err) => {
+        console.error('❌ Erreur inscription :', err);
+        alert('❌ Une erreur est survenue lors de l’inscription.');
+      }
+    });
   }
 
   goToLogin() {

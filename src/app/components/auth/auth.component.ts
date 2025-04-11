@@ -23,22 +23,25 @@ export class AuthComponent {
     }
 
     this.authService.login(this.email, this.password).subscribe({
-      next: (user) => {
-        if (user) {
-          alert('Connexion réussie !');
+      next: (response) => {
+        // ✅ Stockage du token et du rôle
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('userRole', response.user?.role || 'inconnu');
 
-          if (user.role === 'gestionnaire') {
-            this.router.navigate(['/dashboard/gestionnaire']);
-          } else if (user.role === 'membre') {
-            this.router.navigate(['/dashboard/membre']);
-          }
+        alert('✅ Connexion réussie !');
+
+        // ✅ Redirection selon le rôle
+        if (response.user?.role === 'gestionnaire') {
+          this.router.navigate(['/dashboard/gestionnaire']);
+        } else if (response.user?.role === 'membre') {
+          this.router.navigate(['/dashboard/membre']);
         } else {
-          alert('Email ou mot de passe incorrect.');
+          this.router.navigate(['/dashboard']);
         }
       },
       error: (err) => {
-        console.error('Erreur lors de la connexion :', err);
-        alert('Erreur technique. Vérifie le fichier JSON ou contacte le support.');
+        console.error('❌ Erreur lors de la connexion :', err);
+        alert("❌ Email ou mot de passe incorrect.");
       }
     });
   }

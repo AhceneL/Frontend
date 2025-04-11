@@ -1,23 +1,44 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ProjetService } from '../../services/projet.service';
 
-import { CreationProjetComponent } from './creation-projet.component';
+@Component({
+  selector: 'app-creation-projet',
+  standalone: true,
+  imports: [FormsModule],
+  templateUrl: './creation-projet.component.html',
+  styleUrls: ['./creation-projet.component.css']
+})
+export class CreationProjetComponent {
+  projectName: string = '';
+  projectDescription: string = '';
+  startDate: string = '';
+  endDate: string = '';
 
-describe('CreationProjetComponent', () => {
-  let component: CreationProjetComponent;
-  let fixture: ComponentFixture<CreationProjetComponent>;
+  constructor(private router: Router, private projetService: ProjetService) {}
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [CreationProjetComponent]
-    })
-    .compileComponents();
+  saveProject() {
+    const nouveauProjet = {
+      nom: this.projectName,
+      description: this.projectDescription,
+      dateDebut: this.startDate,
+      dateFin: this.endDate
+    };
 
-    fixture = TestBed.createComponent(CreationProjetComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    this.projetService.create(nouveauProjet).subscribe({
+      next: () => {
+        alert('✅ Projet enregistré avec succès !');
+        this.router.navigate(['/dashboard/gestionnaire']);
+      },
+      error: (err) => {
+        console.error('❌ Erreur lors de la création du projet', err);
+        alert('Erreur serveur. Veuillez réessayer plus tard.');
+      }
+    });
+  }
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  cancel() {
+    this.router.navigate(['/dashboard/gestionnaire']);
+  }
+}

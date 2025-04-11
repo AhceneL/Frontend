@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ProjetService } from '../../services/projet.service';
 
 @Component({
   selector: 'app-creation-projet',
@@ -14,45 +15,44 @@ export class CreationProjetComponent {
   projectDescription: string = '';
   startDate: string = '';
   endDate: string = '';
-  members: string = ''; // tu pourras améliorer ça plus tard avec une vraie liste
+  members: string = ''; // chaîne avec des emails séparés par virgule
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private projetService: ProjetService) {}
 
   saveProject() {
-    const userId = localStorage.getItem('userId');
-    const gestionnairesRaw = localStorage.getItem('gestionnaires');
+    const token = localStorage.getItem('token');
 
-    if (!userId || !gestionnairesRaw) {
-      alert('❌ Impossible de récupérer les données du gestionnaire.');
+    if (!token) {
+      alert('❌ Vous n’êtes pas connecté.');
       return;
     }
 
-    const gestionnaires = JSON.parse(gestionnairesRaw);
-    const gestionnaire = gestionnaires.find((g: any) => g.id === userId);
-
-    if (!gestionnaire) {
-      alert('❌ Gestionnaire non trouvé.');
-      return;
-    }
+    const membresEmails: string[] = this.members
+      .split(',')
+      .map(email => email.trim())
+      .filter(email => email.length > 0);
 
     const nouveauProjet = {
       nom: this.projectName,
       description: this.projectDescription,
       dateDebut: this.startDate,
-      dateEcheance: this.endDate,
-      membres: this.members.split(',').map(m => m.trim()),
-      taches: [] // Projet vide au départ
+      dateFin: this.endDate,
+      membresEmails: membresEmails
     };
 
-    // Ajout dans les projets du gestionnaire
-    if (!gestionnaire.projets) gestionnaire.projets = [];
-    gestionnaire.projets.push(nouveauProjet);
+    // 🔍 Affiche le JSON envoyé pour debug
+    console.log('📦 JSON envoyé au backend :', JSON.stringify(nouveauProjet, null, 2));
 
-    // Sauvegarde
-    localStorage.setItem('gestionnaires', JSON.stringify(gestionnaires));
-
-    alert('✅ Projet enregistré avec succès !');
-    this.router.navigate(['/dashboard/gestionnaire']);
+    this.projetService.create(nouveauProjet).subscribe({
+      next: () => {
+        alert('✅ Projet enregistré avec succès !');
+        this.router.navigate(['/dashboard/gestionnaire']);
+      },
+      error: (err) => {
+        console.error('❌ Erreur lors de la création du projet', err);
+        alert(err.error?.message || 'Erreur lors de la création du projet. Vérifie les champs ou les membres.');
+      }
+    });
   }
 
   cancel() {
