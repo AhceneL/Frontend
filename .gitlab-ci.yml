@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 image: node:18
 
 stages:
@@ -30,3 +31,37 @@ run_tests:
     - npm run test -- --watch=false --browsers=ChromeHeadless
   dependencies:
     - install_dependencies
+=======
+image: node:18
+
+stages:
+  - install
+  - build
+  - test
+
+cache:
+  paths:
+    - node_modules/
+
+install_dependencies:
+  stage: install
+  script:
+    - npm ci
+
+build_app:
+  stage: build
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+
+run_tests:
+  stage: test
+  script:
+    - npm install -g @angular/cli
+    - npm install -g karma-cli
+    - npm run test -- --watch=false --browsers=ChromeHeadless
+  dependencies:
+    - install_dependencies
+>>>>>>> 7047c9b5da60729fa291f5c66c6944c665dc067b

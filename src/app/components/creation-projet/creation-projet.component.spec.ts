@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -42,3 +43,28 @@ export class CreationProjetComponent {
     this.router.navigate(['/dashboard/gestionnaire']);
   }
 }
+=======
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { CreationProjetComponent } from './creation-projet.component';
+
+describe('CreationProjetComponent', () => {
+  let component: CreationProjetComponent;
+  let fixture: ComponentFixture<CreationProjetComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [CreationProjetComponent]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(CreationProjetComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+>>>>>>> 7047c9b5da60729fa291f5c66c6944c665dc067b
