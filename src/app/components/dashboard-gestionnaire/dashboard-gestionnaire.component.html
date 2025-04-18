@@ -1,8 +1,8 @@
 <div class="dashboard-container">
   <div class="sidebar">
     <div class="profile">
-      <img [src]="gestionnaireData?.avatar || 'assets/avatar-par-defaut.jpg'" alt="Avatar" class="avatar" />
-      <p class="username">{{ gestionnaireData?.nom || 'Utilisateur' }}</p>
+      <img [src]="avatar || 'assets/avatar-par-defaut.jpg'" alt="Avatar" class="avatar" />
+      <p class="username">{{ gestionnaireEmail || 'Utilisateur' }}</p>
       <span class="role">Gestionnaire</span>
       <button class="profile-button" (click)="goToProfilEdit()">Gérer le Profil</button>
     </div>
@@ -14,12 +14,12 @@
       <div class="gestionnaire-container">
         <!-- Add Member Button (Initially shown) -->
         <button *ngIf="!showForm" class="action-button" (click)="toggleForm()">Ajouter Membre</button>
-      
+
         <!-- Form for Adding Member (When button is clicked) -->
         <div *ngIf="showForm" class="member-form">
           <input type="text" [(ngModel)]="newMemberName" class="form-control mb-2" placeholder="Nom du membre" />
           <input type="email" [(ngModel)]="newMemberEmail" class="form-control mb-2" placeholder="Email du membre" />
-      
+
           <div class="form-actions">
             <button class="btn btn-success" (click)="addMember()">Confirmer</button>
             <button class="btn btn-secondary" (click)="toggleForm()">Annuler</button>

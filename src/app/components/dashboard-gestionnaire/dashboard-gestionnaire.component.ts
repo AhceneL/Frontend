@@ -2,53 +2,46 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ProjetService } from '../../services/projet.service';
 
 @Component({
   selector: 'app-dashboard-gestionnaire',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './dashboard-gestionnaire.component.html',
   styleUrls: ['./dashboard-gestionnaire.component.css']
 })
 export class DashboardGestionnaireComponent implements OnInit {
-  gestionnaireData: any = null;
   projets: any[] = [];
+  gestionnaireEmail: string = '';
+  avatar: string = 'assets/avatar-par-defaut.jpg';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private projetService: ProjetService) {}
 
   ngOnInit(): void {
-    const data = localStorage.getItem('gestionnaires');
-    const userId = localStorage.getItem('userId');
-
-    if (data && userId) {
-      try {
-        const gestionnaires = JSON.parse(data);
-        this.gestionnaireData = gestionnaires.find((g: any) => g.id === userId);
-
-        if (this.gestionnaireData) {
-          // Assigner un avatar par défaut s'il est manquant
-          if (!this.gestionnaireData.avatar) {
-            this.gestionnaireData.avatar = 'assets/avatar-par-defaut.jpg';
-          }
-
-          if (Array.isArray(this.gestionnaireData.projets)) {
-            this.projets = this.gestionnaireData.projets.map((projet: any) => ({
-              ...projet,
-              statut: this.calculerStatutProjet(projet)
-            }));
-          } else {
-            this.projets = [];
-            console.warn('⚠️ Aucun projet trouvé pour ce gestionnaire.');
-          }
-        } else {
-          console.warn('⚠️ Gestionnaire non trouvé.');
-        }
-      } catch (e) {
-        console.error('❌ Erreur lors du parsing de gestionnaires.json :', e);
-      }
-    } else {
-      console.warn('❌ Données de session manquantes pour le gestionnaire.');
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.warn('❌ Aucun token trouvé, utilisateur non connecté.');
+      return;
     }
+
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    this.gestionnaireEmail = payload.sub; // 📧 Email du gestionnaire connecté
+
+    this.projetService.getAll().subscribe({
+      next: (data) => {
+        // ⚙️ Filtrer les projets du gestionnaire connecté
+        this.projets = data
+          .filter((p: any) => p.createurEmail === this.gestionnaireEmail)
+          .map((projet: any) => ({
+            ...projet,
+            statut: this.calculerStatutProjet(projet)
+          }));
+      },
+      error: (err) => {
+        console.error('❌ Erreur lors du chargement des projets', err);
+      }
+    });
   }
 
   calculerStatutProjet(projet: any): string {
@@ -82,33 +75,29 @@ export class DashboardGestionnaireComponent implements OnInit {
   goToProfil(): void {
     this.router.navigate(['/profil']);
   }
-  
+
   goToProfilEdit(): void {
     this.router.navigate(['/profil/edit']);
   }
-  
-  showForm = false; // To toggle between form and button
-  newMemberName = ''; // For storing the name of the new member
-  newMemberEmail = ''; // For storing the email of the new member
 
-  // Function to toggle form visibility
+  showForm = false;
+  newMemberName = '';
+  newMemberEmail = '';
+
   toggleForm(): void {
     this.showForm = !this.showForm;
     if (!this.showForm) {
-      // Reset the fields when form is hidden
       this.newMemberName = '';
       this.newMemberEmail = '';
     }
   }
 
-  // Function to handle member addition
   addMember(): void {
     if (!this.newMemberName.trim() || !this.newMemberEmail.trim()) {
       alert("❌ Veuillez entrer un nom et une adresse e-mail valides.");
       return;
     }
 
-    // Simulate sending an email with member data
     const emailData = {
       to: this.newMemberEmail,
       subject: 'Bienvenue dans l\'équipe!',
@@ -117,17 +106,14 @@ export class DashboardGestionnaireComponent implements OnInit {
 
     const blob = new Blob([JSON.stringify(emailData, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-    
+
     const a = document.createElement('a');
     a.href = url;
     a.download = `email_${this.newMemberName}.json`;
     a.click();
-    
+
     URL.revokeObjectURL(url);
     alert('📩 Simulation d\'envoi d\'email réussie!');
-
-    // Hide the form after adding the member
     this.toggleForm();
   }
-
 }
