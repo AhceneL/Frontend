@@ -64,7 +64,7 @@ export class DetailTacheGestComponent implements OnInit {
           this.tache = data;  // Récupérer les détails de la tâche
           this.status = this.tache.statut;
           this.dueDate = this.tache.dateLimite;
-          this.assignedTo = this.tache.assigneA || '';
+          this.assignedTo = this.tache.assigneeEmail || '';
           this.description = this.tache.description || '';
         } else {
           console.log('Aucune tâche trouvée pour l\'ID:', taskId);
@@ -132,6 +132,15 @@ export class DetailTacheGestComponent implements OnInit {
       this.enregistrer();
 
       alert('✅ Tâche mise à jour et sauvegardée avec succès.');
+      console.log("Données envoyées au backend:", {
+        id: this.tache.id,
+        statut: this.tache.statut,
+        dateEcheance: this.tache.dateEcheance,
+        assigneA: this.tache.assigneA,
+        description: this.tache.description,
+        commentaires: this.tache.commentaires,
+        fichier: this.tache.fichier
+      });
     } else {
       alert('❌ Erreur : aucune tâche à mettre à jour.');
     }
