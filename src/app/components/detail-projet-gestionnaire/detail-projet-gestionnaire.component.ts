@@ -99,6 +99,11 @@ export class DetailProjetGestionnaireComponent implements OnInit {
     }
   }
 
+  goToCreateTache() {
+    this.router.navigate(['/dashboard/gestionnaire/detail-projet/creation-tache'], {
+      queryParams: { projetId: this.projet.id }  // Passer l'ID du projet comme paramètre
+    });
+  }
 
   // Trouver l'ID du membre à partir de son email
   getAssigneeIdByEmail(email: string): number | null {
