@@ -15,7 +15,7 @@ export class TacheService {
     return this.http.get<any[]>(`${this.apiUrl}/projet/${projetId}`);
   }
 
-  // ✅ Crée une tâche (assigneeId, projetId, etc.)
+  // ✅ Crée une tâche (assigneeEmail, projetId, etc.)
   create(tache: any): Observable<any> {
     console.log("📤 Envoi de la tâche au backend :", tache);
     return this.http.post<any>(this.apiUrl, tache);

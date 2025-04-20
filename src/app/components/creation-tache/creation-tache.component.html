@@ -21,6 +21,10 @@
       <option *ngFor="let member of members" [value]="member">{{ member }}</option>
     </select>
 
+    <!-- Sélection de la date limite -->
+    <label for="taskDateLimite">Date limite</label>
+    <input type="date" id="taskDateLimite" [(ngModel)]="taskDateLimite" name="taskDateLimite" required />
+
     <!-- Sélection de l'état -->
     <label>État</label>
     <div class="status-selection">

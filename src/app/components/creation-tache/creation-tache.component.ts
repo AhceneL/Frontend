@@ -15,10 +15,11 @@ import { TacheService } from '../../services/tache.service';
 export class CreationTacheComponent {
   taskTitle: string = '';
   taskDescription: string = '';
-  assignedMember: string = '';
+  assignedMember: string = '';  // L'email du membre assigné
   taskStatus: string = 'En attente';
+  taskDateLimite: string = '';  // Date limite de la tâche
 
-  members: string[] = []; // Liste des membres du projet
+  members: string[] = []; // Liste des membres du projet (emails)
   projetId: number = 1;  // ID du projet (vous pouvez ajuster cela selon votre logique)
 
   constructor(
@@ -67,24 +68,19 @@ export class CreationTacheComponent {
 
   // Ajouter une tâche et sauvegarder dans le backend
   addTask() {
-    if (this.taskTitle.trim() === '' || this.assignedMember.trim() === '') {
+    if (this.taskTitle.trim() === '' || this.assignedMember.trim() === '' || this.taskDateLimite.trim() === '') {
       alert('❌ Veuillez remplir tous les champs obligatoires.');
       return;
     }
 
-    // Vérification de l'ID du membre assigné
-    const assigneeId = this.getAssigneeIdByEmail(this.assignedMember);
-    if (assigneeId === null) {
-      alert('❌ Le membre assigné est invalide.');
-      return;
-    }
-
+    // Envoi de la tâche avec l'email assigné et la date limite
     const tache = {
       titre: this.taskTitle,
       description: this.taskDescription,
       statut: this.taskStatus,
       projetId: this.projetId,  // Assurez-vous de récupérer l'ID du projet
-      assigneeId  // Trouver l'ID du membre
+      assigneeEmail: this.assignedMember,  // L'email du membre assigné
+      dateLimite: this.taskDateLimite  // La date limite de la tâche
     };
 
     console.log("📤 Envoi de la tâche au backend :", tache);
@@ -92,7 +88,10 @@ export class CreationTacheComponent {
     this.tacheService.create(tache).subscribe({
       next: () => {
         alert('✅ Tâche ajoutée avec succès !');
-        this.router.navigate(['/dashboard/gestionnaire/detail-projet']);
+        // Revenir à la page des détails du projet en ajoutant un paramètre de query
+        this.router.navigate(['/dashboard/gestionnaire/detail-projet'], {
+          queryParams: { projet: `projet ${this.projetId}` }
+        });
       },
       error: (err) => {
         console.error("Erreur lors de l’ajout de la tâche :", err);  // Log détaillé de l'erreur
@@ -101,15 +100,11 @@ export class CreationTacheComponent {
     });
   }
 
-  // Trouver l'ID du membre à partir de son email
-  getAssigneeIdByEmail(email: string): number | null {
-    const membre = this.members.find((emailInList: string) => emailInList === email);
-    return membre ? this.members.indexOf(membre) : null;
-  }
-
   // Annuler et revenir aux détails du projet sans ajouter de tâche
   cancel() {
-    this.router.navigate(['/dashboard/gestionnaire/detail-projet']);
+    this.router.navigate(['/dashboard/gestionnaire/detail-projet'], {
+      queryParams: { projet: `projet ${this.projetId}` }
+    });
   }
 
   // Retour au tableau de bord des gestionnaires
