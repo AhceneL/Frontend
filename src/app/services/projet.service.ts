@@ -39,4 +39,8 @@ export class ProjetService {
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
+  // Ajouter un membre au projet
+  addMemberToProject(projetId: number, email: string): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/${projetId}/ajouter-membre`, { email });
+  }
 }

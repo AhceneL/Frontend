@@ -15,11 +15,14 @@
     </div>
   </header>
 
-  <!-- Membres -->
+  <!-- Membres assignés -->
   <section class="project-section">
     <h3>👥 Membres assignés</h3>
     <ul>
-      <li *ngFor="let member of projet.membres">{{ member }}</li>
+      <!-- Boucle à travers les emails des membres et les afficher -->
+      <li *ngFor="let membreEmail of projet.membresEmails">
+        {{ membreEmail }}
+      </li>
     </ul>
     <button (click)="addMember()">➕ Ajouter un membre</button>
   </section>
