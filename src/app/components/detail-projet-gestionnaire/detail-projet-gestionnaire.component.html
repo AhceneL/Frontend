@@ -31,10 +31,10 @@
   <section class="project-section">
     <h3>✅ Tâches</h3>
     <ul>
-      <li *ngFor="let task of projet.taches">
-        <strong>{{ task.nom }}</strong> — {{ task.statut }} — 🔥 {{ task.priorite }} — 🗓 {{ task.dateEcheance }}
+      <li *ngFor="let task of taches">
+        <strong>{{ task.titre }}</strong> — {{ task.statut }} — 🔥 {{ task.priorite }} — 🗓 {{ task.dateEcheance }}
         <br />
-        <small>👤 Assignée à : {{ task.assigneA || 'Non défini' }}</small>
+        <small>👤 Assignée à : {{ task.assigneeEmail || 'Non défini' }}</small>
         <div>
           <button (click)="goToModificationTache(task)">✏️ Modifier</button>
           <button (click)="goToDetailTache(task)">🔍 Voir Détail</button>
@@ -43,6 +43,7 @@
     </ul>
     <button (click)="goToCreateTache()">➕ Ajouter une tâche</button>
   </section>
+
 
   <!-- Déconnexion -->
   <footer>

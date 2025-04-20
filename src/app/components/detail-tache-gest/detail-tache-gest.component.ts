@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { TacheService } from '../../services/tache.service'; // Assurez-vous que ce service est correctement importé
 import { FormsModule } from '@angular/forms';
-
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-detail-tache-gest',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule,CommonModule],
   templateUrl: './detail-tache-gest.component.html',
   styleUrls: ['./detail-tache-gest.component.css']
 })
-export class DetailTacheGestComponent {
+export class DetailTacheGestComponent implements OnInit {
   taskName: string = '';
   dueDate: string = '';
   assignedTo: string = '';
@@ -24,34 +24,58 @@ export class DetailTacheGestComponent {
   projetParent: any = null;
   tache: any = null;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private tacheService: TacheService // Injecter le service pour récupérer les données de l'API
+  ) {}
+
+  ngOnInit(): void {
+    console.log('Chargement du composant...');
+
     this.route.queryParams.subscribe(params => {
-      this.taskName = params['task'];
-      this.gestionnaireId = localStorage.getItem('userId') || '';
-      this.chargerTache();
+      const taskId = params['taskId'];  // Récupérer l'ID de la tâche depuis l'URL
+      console.log('taskId récupéré:', taskId);
+
+      if (taskId) {
+        // Convertir taskId en nombre
+        const taskIdNumber = Number(taskId);
+        console.log('taskId converti en nombre:', taskIdNumber);
+
+        if (!isNaN(taskIdNumber)) {
+          this.chargerTache(taskIdNumber);  // Charger la tâche via l'API
+        } else {
+          alert("❌ L'ID de la tâche n'est pas valide !");
+        }
+      } else {
+        alert("❌ L'ID de la tâche est manquant !");
+      }
     });
   }
 
-  chargerTache() {
-    const data = localStorage.getItem('gestionnaires');
-    if (!data || !this.gestionnaireId || !this.taskName) return;
+  chargerTache(taskId: number) {
+    console.log('Appel de l\'API pour récupérer la tâche avec l\'ID:', taskId);
 
-    const gestionnaires = JSON.parse(data);
-    this.gestionnaireData = gestionnaires.find((g: any) => g.id === this.gestionnaireId);
-    if (!this.gestionnaireData) return;
+    this.tacheService.getTacheById(taskId).subscribe({
+      next: (data: any) => {
+        console.log('Données récupérées de l\'API:', data);
 
-    for (let projet of this.gestionnaireData.projets) {
-      const tacheTrouvee = projet.taches.find((t: any) => t.nom === this.taskName);
-      if (tacheTrouvee) {
-        this.projetParent = projet;
-        this.tache = tacheTrouvee;
-        this.status = this.tache.statut;
-        this.dueDate = this.tache.dateEcheance;
-        this.assignedTo = this.tache.assigneA || '';
-        this.description = this.tache.description || '';
-        break;
+        if (data) {
+          this.tache = data;  // Récupérer les détails de la tâche
+          this.status = this.tache.statut;
+          this.dueDate = this.tache.dateLimite;
+          this.assignedTo = this.tache.assigneA || '';
+          this.description = this.tache.description || '';
+        } else {
+          console.log('Aucune tâche trouvée pour l\'ID:', taskId);
+          alert("❌ Tâche introuvable.");
+        }
+      },
+      error: (err) => {
+        console.error("Erreur lors du chargement de la tâche:", err);
+        alert("❌ Impossible de charger la tâche. Erreur: " + err);
       }
-    }
+    });
   }
 
   updateStatus(newStatus: string) {
@@ -92,7 +116,7 @@ export class DetailTacheGestComponent {
       this.tache.assigneA = this.assignedTo;
       this.tache.description = this.description;
 
-      // Vérifie si commentaire non vide
+      // Vérifie si un commentaire est ajouté
       if (this.comments.trim()) {
         if (!this.tache.commentaires) this.tache.commentaires = [];
         this.tache.commentaires.push(this.comments.trim());
@@ -104,7 +128,7 @@ export class DetailTacheGestComponent {
         this.tache.fichier = this.file.name;
       }
 
-      // Enregistre les changements dans le localStorage
+      // Enregistre les changements via l'API
       this.enregistrer();
 
       alert('✅ Tâche mise à jour et sauvegardée avec succès.');
@@ -114,19 +138,27 @@ export class DetailTacheGestComponent {
   }
 
   enregistrer() {
-    const allGestionnaires = JSON.parse(localStorage.getItem('gestionnaires') || '[]');
-    const index = allGestionnaires.findIndex((g: any) => g.id === this.gestionnaireId);
-    if (index !== -1) {
-      allGestionnaires[index] = this.gestionnaireData;
-      localStorage.setItem('gestionnaires', JSON.stringify(allGestionnaires));
-    }
+    console.log("Enregistrement de la tâche mise à jour:", this.tache);
+
+    // Enregistrer la tâche dans le backend via l'API
+    this.tacheService.update(this.tache.id, this.tache).subscribe({
+      next: (data) => {
+        console.log("Tâche mise à jour avec succès :", data);
+      },
+      error: (err) => {
+        console.error("Erreur lors de la mise à jour de la tâche", err);
+        alert("❌ Erreur lors de la mise à jour de la tâche");
+      }
+    });
   }
 
   goToDashboard() {
+    console.log('Retour au tableau de bord');
     this.router.navigate(['/dashboard/gestionnaire']);
   }
 
   logout() {
+    console.log('Déconnexion...');
     localStorage.clear();
     this.router.navigate(['/auth']);
   }

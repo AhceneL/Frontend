@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,16 @@ export class TacheService {
 
   // ✅ Récupère toutes les tâches d’un projet donné
   getAllByProjet(projetId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/projet/${projetId}`);
+    return this.http.get<any[]>(`${this.apiUrl}/projet/${projetId}`).pipe(
+      catchError((err: HttpErrorResponse) => {
+        console.error('Erreur lors de la récupération des tâches:', err);
+        alert('⚠️ Erreur lors de la récupération des tâches.');
+        return throwError(err);
+      })
+    );
   }
 
-  // ✅ Crée une tâche (assigneeEmail, projetId, etc.)
+  // ✅ Crée une tâche
   create(tache: any): Observable<any> {
     console.log("📤 Envoi de la tâche au backend :", tache);
     return this.http.post<any>(this.apiUrl, tache);
@@ -30,4 +37,19 @@ export class TacheService {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+  // ✅ Récupère une tâche par son ID
+  getTacheById(tacheId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${tacheId}`).pipe(
+      catchError(this.handleError)  // Gérer les erreurs
+    );
 }
+  private handleError(error: HttpErrorResponse) {
+    let errorMessage = 'Une erreur inconnue est survenue';
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = `Erreur: ${error.error.message}`;
+    } else {
+      errorMessage = `Code d'erreur: ${error.status}, Message: ${error.message}`;
+    }
+    console.error('Erreur:', errorMessage);
+    return throwError(errorMessage);  // Propage l'erreur
+  }}

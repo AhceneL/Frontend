@@ -56,6 +56,7 @@ export class DetailProjetGestionnaireComponent implements OnInit {
   chargerTaches(projetId: number) {
     this.tacheService.getAllByProjet(projetId).subscribe({
       next: (data: any[]) => {
+        console.log("Données des tâches reçues :", data);  // Vérification des données
         this.taches = data;
       },
       error: () => {
@@ -63,6 +64,7 @@ export class DetailProjetGestionnaireComponent implements OnInit {
       }
     });
   }
+
 
   // Ajouter une tâche au projet
   addTask() {
