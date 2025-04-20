@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';  // Ajoutez ActivatedRoute
 import { FormsModule } from '@angular/forms';  // Importation de FormsModule
 import { CommonModule } from '@angular/common';  // Module commun pour les directives de base
 import { ProjetService } from '../../services/projet.service';
@@ -12,7 +12,7 @@ import { TacheService } from '../../services/tache.service';
   templateUrl: './creation-tache.component.html',
   styleUrls: ['./creation-tache.component.css']
 })
-export class CreationTacheComponent {
+export class CreationTacheComponent implements OnInit {
   taskTitle: string = '';
   taskDescription: string = '';
   assignedMember: string = '';  // L'email du membre assigné
@@ -20,16 +20,26 @@ export class CreationTacheComponent {
   taskDateLimite: string = '';  // Date limite de la tâche
 
   members: string[] = []; // Liste des membres du projet (emails)
-  projetId: number = 1;  // ID du projet (vous pouvez ajuster cela selon votre logique)
+  projetId: number = 0;  // ID du projet (initialisé à 0, sera mis à jour via l'URL)
 
   constructor(
     private router: Router,
     private projetService: ProjetService,
-    private tacheService: TacheService
+    private tacheService: TacheService,
+    private route: ActivatedRoute  // Injection d'ActivatedRoute pour accéder aux paramètres de l'URL
   ) {}
 
   ngOnInit(): void {
-    this.loadMembers();  // Charger les membres lors de l'initialisation
+    // Récupérer l'ID du projet depuis les paramètres de l'URL
+    this.projetId = Number(this.route.snapshot.queryParamMap.get('projetId'));  // Utilisation de queryParamMap
+    console.log("ID du projet récupéré depuis l'URL :", this.projetId);
+
+    // Si l'ID du projet est valide, charger les membres
+    if (this.projetId > 0) {
+      this.loadMembers();  // Charger les membres du projet
+    } else {
+      alert('❌ L\'ID du projet est manquant ou incorrect.');
+    }
   }
 
   // Charger dynamiquement les membres assignables au projet depuis l'API
