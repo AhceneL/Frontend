@@ -1,13 +1,23 @@
 <div class="notifications-container">
   <h2>Notifications</h2>
+
+  <!-- Bouton pour effacer toutes les notifications -->
   <button class="clear-btn" (click)="clearNotifications()">Tout effacer</button>
 
+  <!-- Liste des notifications -->
   <ul *ngIf="notifications.length > 0; else noNotif">
-    <li *ngFor="let notif of notifications">
-      {{ notif.message }} - <span class="time">{{ notif.time }}</span>
+    <li *ngFor="let notif of notifications" [ngClass]="{'unread': !notif.isRead}">
+      <!-- Afficher le message et l'heure de la notification -->
+      <p>{{ notif.message }} - <span class="time">{{ notif.dateCreated | date:'short' }}</span></p>
+
+      <!-- Bouton pour marquer la notification comme lue -->
+      <button (click)="markAsRead(notif.id)" *ngIf="!notif.isRead" class="mark-read-btn">
+        Marquer comme lue
+      </button>
     </li>
   </ul>
 
+  <!-- Message quand aucune notification n'est disponible -->
   <ng-template #noNotif>
     <p>Aucune notification pour le moment.</p>
   </ng-template>
