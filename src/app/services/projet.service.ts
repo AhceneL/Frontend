@@ -34,7 +34,9 @@ export class ProjetService {
   update(id: number, projet: any): Observable<any> {
     return this.http.put(`${this.apiUrl}/${id}`, projet);
   }
-
+  getProjetsParMembre(email: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/projets-membre?email=${email}`);
+  }
   // ❌ Supprimer un projet
   delete(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);

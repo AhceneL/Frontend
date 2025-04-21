@@ -21,7 +21,15 @@ export class TacheService {
       })
     );
   }
-
+  getTachesParMembre(projetId: number, email: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/projet/${projetId}/membre/${email}`).pipe(
+      catchError((err: HttpErrorResponse) => {
+        console.error('Erreur lors de la récupération des tâches pour le membre:', err);
+        alert('⚠️ Erreur lors de la récupération des tâches.');
+        return throwError(err);
+      })
+    );
+  }
   // ✅ Crée une tâche
   create(tache: any): Observable<any> {
     console.log("📤 Envoi de la tâche au backend :", tache);

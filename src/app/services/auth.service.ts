@@ -42,4 +42,12 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
+  getTokenEmail(): string | null {
+    const token = this.getToken();
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.sub; // 'sub' correspond généralement à l'email dans un JWT
+    }
+    return null;
+  }
 }

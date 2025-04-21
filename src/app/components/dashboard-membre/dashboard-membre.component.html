@@ -31,7 +31,7 @@
         </p>
 
         <p class="task-count">
-          Nombre de tâches : {{ isArray(projet.taches) ? projet.taches.length : 0 }}
+          Nombre de tâches : {{ projet.nombreDeTaches || 0 }} <!-- Affichage du nombre de tâches -->
         </p>
 
         <button class="detail-button" (click)="goToDetailProjet(projet.nom)">Voir Détails</button>
