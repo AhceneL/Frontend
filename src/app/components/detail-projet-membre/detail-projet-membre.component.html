@@ -1,9 +1,11 @@
 <div class="detail-container">
   <!-- En-tête -->
-
+  <div class="header">
+    <h2>Détails du Projet: {{ projetSelectionneNom }}</h2>
+  </div>
 
   <!-- Contenu -->
-  <div class="content" *ngIf="membreData">
+  <div class="content" *ngIf="projets && projets.length > 0">
     <div class="layout">
       <!-- Sélecteur de projet -->
       <div class="project-selector">
@@ -11,14 +13,13 @@
         <select id="project-select" [(ngModel)]="projetSelectionneNom" (change)="getTachesFiltrees()">
           <option *ngFor="let projet of projets" [value]="projet.nom">{{ projet.nom }}</option>
         </select>
-
       </div>
 
       <!-- Filtres -->
       <div class="filters">
         <h3>Filtres</h3>
-        <label><input type="radio" name="filter" (change)="setFiltre('prioritaire')" /> Prioritaire</label>
-        <label><input type="radio" name="filter" (change)="setFiltre('semaine')" /> À rendre cette semaine</label>
+        <label><input type="radio" name="filter" (change)="setFiltre('enAttente')" /> En Attente</label>
+        <label><input type="radio" name="filter" (change)="setFiltre('enCours')" /> En Cours</label>
         <label><input type="radio" name="filter" (change)="setFiltre('termine')" /> Terminé</label>
         <label><input type="radio" name="filter" (change)="setFiltre('')" checked /> Tous</label>
       </div>
@@ -36,11 +37,11 @@
             }"
           >
             <div class="task-content">
-              <p><strong>📅 Échéance:</strong> {{ tache.dateEcheance }}</p>
+              <p><strong>📅 Échéance:</strong> {{ tache.dateLimite | date:'shortDate' }}</p>
               <p><strong>🚩 Priorité:</strong> {{ tache.priorite | titlecase }}</p>
               <p><strong>📌 Statut:</strong> {{ tache.statut }}</p>
             </div>
-            <button class="detail-button" (click)="goToDetailTache(tache.nom)">Voir Détails</button>
+            <button class="detail-button" (click)="goToDetailTache(tache.id)">Voir Détails</button>
           </div>
         </div>
 

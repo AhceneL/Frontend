@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { ProjetService } from '../../services/projet.service';
+import { TacheService } from '../../services/tache.service'; // Importer TacheService
+import { AuthService } from '../../services/auth.service'; // Importer AuthService
 import { CommonModule, TitleCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -16,75 +19,103 @@ export class DetailProjetMembreComponent implements OnInit {
   projetSelectionneNom: string = '';
   filtreActif: string = '';
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private projetService: ProjetService,
+    private tacheService: TacheService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    const data = localStorage.getItem('membres');
-    const userId = localStorage.getItem('userId');
+    const email = this.authService.getTokenEmail();
 
-    if (data && userId) {
-      const membres = JSON.parse(data);
-      this.membreData = membres.find((m: any) => m.id === userId);
-
-      if (this.membreData && Array.isArray(this.membreData.projets)) {
-        this.projets = this.membreData.projets;
-
-        const projetParam = this.route.snapshot.queryParamMap.get('projet');
-        this.projetSelectionneNom = projetParam || this.projets[0]?.nom || '';
-      }
+    if (!email) {
+      console.error("⚠️ L'email est manquant ou l'utilisateur n'est pas connecté.");
+      alert("Vous devez être connecté pour accéder à vos projets.");
+      this.router.navigate(['/auth']);
+      return;
     }
+
+    console.log("Email récupéré du token:", email);
+
+    this.projetService.getProjetsParMembre(email).subscribe({
+      next: (projets) => {
+        console.log("Projets récupérés depuis le backend:", projets);
+        if (projets && projets.length > 0) {
+          this.projets = projets;
+
+          const projetParam = this.route.snapshot.queryParamMap.get('projet');
+          this.projetSelectionneNom = projetParam || this.projets[0]?.nom || '';
+
+          console.log("Nom du projet sélectionné:", this.projetSelectionneNom);
+
+          this.projets.forEach(projet => {
+            console.log("Récupération des tâches pour le projet:", projet.nom);
+            this.tacheService.getTachesParMembre(projet.id, email).subscribe({
+              next: (taches) => {
+                console.log("Tâches récupérées pour le projet", projet.nom, ":", taches);
+                projet.nombreDeTaches = taches.length;
+                projet.taches = taches;
+              },
+              error: (err) => {
+                console.error('Erreur lors de la récupération des tâches pour le projet:', projet.nom, err);
+              }
+            });
+          });
+        } else {
+          console.warn('🔍 Aucun projet trouvé pour cet utilisateur.');
+        }
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des projets :', err);
+        alert("⚠️ Impossible de charger les projets. Veuillez réessayer.");
+      }
+    });
   }
 
-  // Getter pour retourner l'objet projet sélectionné
   get projetSelectionne(): any {
     return this.projets.find((p: any) => p.nom === this.projetSelectionneNom);
   }
 
-  // Filtrer les tâches selon le filtre actif
   getTachesFiltrees(): any[] {
     const projet = this.projetSelectionne;
-    if (!projet || !projet.taches) return [];
+    if (!projet || !projet.taches) {
+      console.log("Aucune tâche à afficher pour le projet:", projet?.nom);
+      return [];
+    }
 
     const taches = projet.taches;
+    console.log("Toutes les tâches du projet:", taches);
 
-    switch (this.filtreActif) {
-      case 'prioritaire':
-        return taches.filter((t: any) => t.priorite?.toLowerCase() === 'haute');
-      case 'semaine':
-        const today = new Date();
-        const in7days = new Date(today);
-        in7days.setDate(today.getDate() + 7);
-        return taches.filter((t: any) => {
-          const date = new Date(t.dateEcheance);
-          return date >= today && date <= in7days;
-        });
-      case 'termine':
-        return taches.filter((t: any) =>
-          t.statut?.toLowerCase() === 'terminé' || t.statut?.toLowerCase() === 'termine'
-        );
-      default:
-        return taches;
+    if (this.filtreActif === 'enAttente') {
+      return taches.filter((t: any) => t.statut?.toLowerCase() === 'en attente');
+    } else if (this.filtreActif === 'enCours') {
+      return taches.filter((t: any) => t.statut?.toLowerCase() === 'en cours');
+    } else if (this.filtreActif === 'termine') {
+      return taches.filter((t: any) => t.statut?.toLowerCase() === 'terminé');
     }
+    return taches;  // Afficher toutes les tâches par défaut
   }
 
-  // Définir le filtre actif
   setFiltre(val: string) {
     this.filtreActif = val;
+    console.log("Filtre actif changé à:", val);
   }
 
-  // Aller vers les détails d'une tâche
-  goToDetailTache(titre: string) {
+  goToDetailTache(taskId: string) {
+    console.log("Navigation vers les détails de la tâche avec ID:", taskId);
     this.router.navigate(['/dashboard/membre/detail-tache'], {
-      queryParams: { task: titre }
+      queryParams: { taskId: taskId }  // Utilisation de taskId dans l'URL
     });
   }
 
-  // Revenir au tableau de bord
+
   goToDashboard() {
+    console.log("Retour au tableau de bord.");
     this.router.navigate(['/dashboard/membre']);
   }
 
-  // Utilisé pour *ngFor trackBy
   trackByNom(index: number, item: any) {
     return item.nom;
   }

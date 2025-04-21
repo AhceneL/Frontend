@@ -1,8 +1,8 @@
 <div class="task-detail-container" *ngIf="taskData">
   <!-- En-tête -->
   <div class="task-header">
-    <h2>{{ taskData.nom }}</h2>
-    <p><strong>📅 Date d'échéance :</strong> {{ taskData.dateEcheance }}</p>
+    <h2>{{ taskData.titre }}</h2>
+    <p><strong>📅 Date d'échéance :</strong> {{ taskData.dateLimite | date:'shortDate' }}</p> <!-- Affichage de la date limite -->
     <p><strong>📁 Projet :</strong> {{ taskData.projet }}</p>
     <p class="description">
       <strong>ℹ️ Description :</strong> {{ taskData.description || 'Aucune description.' }}
