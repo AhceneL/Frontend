@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // ✅ Correct import
-
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';  // Importer AuthService
+import { UserService } from '../../services/user.service';  // Importer UserService
 
 @Component({
   selector: 'app-profile',
@@ -14,31 +15,56 @@ import { FormsModule } from '@angular/forms'; // ✅ Correct import
 export class ProfileComponent implements OnInit {
   user: any = null;
   originalUser: any = null;
+  email: string = ''; // Pour stocker l'email de l'utilisateur
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+              private authService: AuthService,
+              private userService: UserService) {}
 
   ngOnInit(): void {
-    const data = localStorage.getItem('currentUser');
-    if (data) {
-      this.user = JSON.parse(data);
-      this.originalUser = { ...this.user }; // pour restaurer en cas d’annulation
+    // Vérifier si l'utilisateur est connecté
+    const email = this.authService.getTokenEmail();
+
+    if (email) {
+      // Appel API pour récupérer le profil de l'utilisateur
+      this.userService.getUserProfile(email).subscribe({
+        next: (data) => {
+          this.user = data;
+          this.originalUser = { ...this.user }; // pour restaurer en cas d’annulation
+        },
+        error: (err) => {
+          console.error('Erreur lors de la récupération du profil:', err);
+          alert("❌ Impossible de récupérer le profil.");
+          this.router.navigate(['/auth']);
+        }
+      });
     } else {
-      alert("Aucun utilisateur connecté.");
+      alert("❌ Aucun utilisateur connecté.");
       this.router.navigate(['/auth']);
     }
   }
 
   saveChanges(): void {
-    localStorage.setItem('currentUser', JSON.stringify(this.user));
-    alert('✅ Profil mis à jour avec succès !');
+    // Envoi des données mises à jour au backend via l'API
+    this.userService.updateUserProfile(this.user).subscribe({
+      next: (data) => {
+        alert('✅ Profil mis à jour avec succès !');
+        localStorage.setItem('currentUser', JSON.stringify(this.user));  // Mettre à jour les données dans localStorage
+      },
+      error: (err) => {
+        console.error('Erreur lors de la mise à jour du profil:', err);
+        alert("❌ Erreur lors de la mise à jour du profil.");
+      }
+    });
   }
 
+
   cancel(): void {
-    this.router.navigate(['dashboard/'+localStorage.getItem('userRole')]);
+    this.user = { ...this.originalUser }; // Restaurer les valeurs initiales
+    this.router.navigate(['dashboard/' + localStorage.getItem('userRole')]);
   }
 
   logout(): void {
-    localStorage.clear();
-    this.router.navigate(['/auth']);
+    this.authService.logout();
   }
 }

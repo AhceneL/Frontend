@@ -2,7 +2,7 @@
   <!-- En-tête -->
   <div class="task-header">
     <h2>{{ taskData.titre }}</h2>
-    <p><strong>📅 Date d'échéance :</strong> {{ taskData.dateLimite | date:'shortDate' }}</p> <!-- Affichage de la date limite -->
+    <p><strong>📅 Date d'échéance :</strong> {{ taskData.dateLimite | date:'shortDate' }}</p>
     <p><strong>📁 Projet :</strong> {{ taskData.projet }}</p>
     <p class="description">
       <strong>ℹ️ Description :</strong> {{ taskData.description || 'Aucune description.' }}
@@ -14,21 +14,18 @@
     <p><strong>🔄 Mettre à jour le statut :</strong></p>
     <div class="status-buttons">
       <button
-        [class.active]="taskData.statut === 'pas commencé'"
-        (click)="updateStatus('pas commencé')"
-      >
+        [ngClass]="{'active': taskData.statut === 'pas commencé', 'red': taskData.statut === 'pas commencé'}"
+        (click)="updateStatus('pas commencé')">
         Pas commencé
       </button>
       <button
-        [class.active]="taskData.statut === 'en cours'"
-        (click)="updateStatus('en cours')"
-      >
+        [ngClass]="{'active': taskData.statut === 'en cours', 'red': taskData.statut === 'en cours'}"
+        (click)="updateStatus('en cours')">
         En cours
       </button>
       <button
-        [class.active]="taskData.statut === 'terminé'"
-        (click)="updateStatus('terminé')"
-      >
+        [ngClass]="{'active': taskData.statut === 'terminé', 'red': taskData.statut === 'terminé'}"
+        (click)="updateStatus('terminé')">
         Terminé
       </button>
     </div>

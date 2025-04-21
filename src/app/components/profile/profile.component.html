@@ -1,5 +1,5 @@
 <div class="profile-page">
-  <div class="profile-card">
+  <div class="profile-card" *ngIf="user">
     <img [src]="user?.avatar || 'assets/avatar-par-defaut.jpg'" class="profile-avatar" alt="Avatar" />
 
     <h2 class="profile-name">{{ user?.nom || 'Utilisateur' }}</h2>
@@ -7,18 +7,18 @@
 
     <form class="profile-form">
       <div class="input-group">
-        <label>Nom d’utilisateur</label>
-        <input [(ngModel)]="user.nom" name="nom" type="text" />
+        <label>Nom</label>
+        <input [(ngModel)]="user.nom" name="nom" type="text" [placeholder]="'Nom'" />
       </div>
 
       <div class="input-group">
-        <label>Mot de passe</label>
-        <input [(ngModel)]="user.password" name="password" type="password" />
+        <label>Prénom</label>
+        <input [(ngModel)]="user.prenom" name="prenom" type="text" [placeholder]="'Prénom'" />
       </div>
 
       <div class="input-group">
-        <label>Numéro de téléphone</label>
-        <input [(ngModel)]="user.telephone" name="telephone" type="text" />
+        <label>Email</label>
+        <input [(ngModel)]="user.email" name="email" type="email" [placeholder]="'Email'" />
       </div>
 
       <div class="form-actions">
@@ -26,6 +26,10 @@
         <button type="button" class="cancel-btn" (click)="cancel()">Annuler</button>
       </div>
     </form>
+  </div>
+
+  <div *ngIf="!user" class="loading">
+    <p>Chargement du profil...</p>
   </div>
 
   <button class="logout-btn" (click)="logout()">Se Déconnecter</button>

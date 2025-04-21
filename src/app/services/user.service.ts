@@ -17,4 +17,13 @@ export class UserService {
   register(user: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, user);
   }
+  // Nouvelle méthode pour récupérer le profil de l'utilisateur
+  getUserProfile(email: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/profile/${email}`);
+  }
+
+  // Nouvelle méthode pour mettre à jour le profil de l'utilisateur
+  updateUserProfile(user: any): Observable<any> {
+    return this.http.put(`${this.apiUrl}/profile`, user);
+  }
 }
