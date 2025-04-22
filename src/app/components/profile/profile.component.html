@@ -1,7 +1,9 @@
 <div class="profile-page">
   <div class="profile-card" *ngIf="user">
     <!-- Affichage de l'avatar -->
-    <img [src]="user?.avatar || 'assets/avatar-par-defaut.jpg'" class="profile-avatar" alt="Avatar" />
+    <div class="avatar-display">
+      <img [src]="user?.avatar || 'assets/avatars/avatar-par-defaut.jpg'" class="profile-avatar" alt="Avatar" />
+    </div>
 
     <h2 class="profile-name">{{ user?.nom || 'Utilisateur' }}</h2>
     <p class="profile-email">{{ user?.email }}</p>
@@ -14,7 +16,7 @@
              [src]="avatar"
              [alt]="'Avatar ' + avatar"
              (click)="changeAvatar(avatar)"
-             [class.selected]="avatar === user.avatar"
+             [class.selected]="avatar === user?.avatar"
              class="avatar-img" />
       </div>
     </div>

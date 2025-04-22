@@ -1,7 +1,8 @@
 <div class="dashboard-container">
   <div class="sidebar">
     <div class="profile">
-      <img [src]="avatar || 'assets/avatar-par-defaut.jpg'" alt="Avatar" class="avatar" />
+      <!-- Affichage de l'avatar dans le tableau de bord -->
+      <img [src]="avatar || 'assets/avatars/avatar-par-defaut.jpg'" alt="Avatar" class="avatar" />
       <p class="username">{{ gestionnaireEmail || 'Utilisateur' }}</p>
       <span class="role">Gestionnaire</span>
       <button class="profile-button" (click)="goToProfilEdit()">Gérer le Profil</button>
@@ -11,21 +12,6 @@
       <h3>Gérer les projets</h3>
       <button class="action-button" (click)="goToCreationProjet()">Créer un nouveau projet</button>
       <button class="action-button" (click)="goToSuiviProgression()">Suivre la progression</button>
-      <div class="gestionnaire-container">
-        <!-- Add Member Button (Initially shown) -->
-        <button *ngIf="!showForm" class="action-button" (click)="toggleForm()">Ajouter Membre</button>
-
-        <!-- Form for Adding Member (When button is clicked) -->
-        <div *ngIf="showForm" class="member-form">
-          <input type="text" [(ngModel)]="newMemberName" class="form-control mb-2" placeholder="Nom du membre" />
-          <input type="email" [(ngModel)]="newMemberEmail" class="form-control mb-2" placeholder="Email du membre" />
-
-          <div class="form-actions">
-            <button class="btn btn-success" (click)="addMember()">Confirmer</button>
-            <button class="btn btn-secondary" (click)="toggleForm()">Annuler</button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 

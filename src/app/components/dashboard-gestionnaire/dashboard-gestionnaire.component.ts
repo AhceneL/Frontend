@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ProjetService } from '../../services/projet.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-dashboard-gestionnaire',
@@ -14,9 +15,10 @@ import { ProjetService } from '../../services/projet.service';
 export class DashboardGestionnaireComponent implements OnInit {
   projets: any[] = [];
   gestionnaireEmail: string = '';
-  avatar: string = 'assets/avatar-par-defaut.jpg';
+  avatar: string = 'assets/avatars/avatar-par-defaut.jpg';
 
-  constructor(private router: Router, private projetService: ProjetService) {}
+  constructor(private router: Router, private projetService: ProjetService , private userService: UserService) {}
+
 
   ngOnInit(): void {
     const token = localStorage.getItem('token');
@@ -28,9 +30,21 @@ export class DashboardGestionnaireComponent implements OnInit {
     const payload = JSON.parse(atob(token.split('.')[1]));
     this.gestionnaireEmail = payload.sub; // 📧 Email du gestionnaire connecté
 
+    // Vérifiez si l'avatar est dans le token ou récupérez-le depuis l'API
+    this.avatar = payload.avatar || 'assets/avatars/avatar-par-defaut.jpg';  // Vérifiez dans le token
+
+    // Récupérer l'avatar depuis l'API si nécessaire
+    this.userService.getUserProfile(this.gestionnaireEmail).subscribe({
+      next: (data) => {
+        this.avatar = data.avatar || 'assets/avatars/avatar-par-defaut.jpg'; // Si l'avatar est dans la réponse de l'API
+      },
+      error: (err) => {
+        console.error('❌ Erreur lors de la récupération de l\'avatar de l\'utilisateur', err);
+      }
+    });
+
     this.projetService.getAll().subscribe({
       next: (data) => {
-        // ⚙️ Filtrer les projets du gestionnaire connecté
         this.projets = data
           .filter((p: any) => p.createurEmail === this.gestionnaireEmail)
           .map((projet: any) => ({
@@ -43,7 +57,6 @@ export class DashboardGestionnaireComponent implements OnInit {
       }
     });
   }
-
   calculerStatutProjet(projet: any): string {
     if (!projet.taches || projet.taches.length === 0) {
       return 'Aucune tâche';

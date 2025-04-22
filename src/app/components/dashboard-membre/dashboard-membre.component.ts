@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ProjetService } from '../../services/projet.service';
 import { TacheService } from '../../services/tache.service'; // Importer TacheService
 import { AuthService } from '../../services/auth.service'; // Importer AuthService
+import { UserService } from '../../services/user.service';  // Importer UserService
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -21,7 +22,8 @@ export class DashboardMembreComponent implements OnInit {
     private router: Router,
     private projetService: ProjetService,
     private tacheService: TacheService, // Injection du service TacheService
-    private authService: AuthService // Injection du service AuthService
+    private authService: AuthService, // Injection du service AuthService
+    private userService: UserService // Injection du service UserService pour récupérer le profil
   ) {}
 
   ngOnInit(): void {
@@ -35,6 +37,19 @@ export class DashboardMembreComponent implements OnInit {
       this.router.navigate(['/auth']);  // Redirige vers la page de connexion si l'email est manquant
       return;
     }
+
+    // Charger le profil de l'utilisateur (y compris l'avatar)
+    this.userService.getUserProfile(email).subscribe({
+      next: (data) => {
+        this.membreData = data;  // Stocker l'utilisateur récupéré
+        console.log('Avatar récupéré:', this.membreData?.avatar);  // Log pour vérifier que l'avatar est récupéré
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération du profil:', err);
+        alert("❌ Impossible de récupérer le profil.");
+        this.router.navigate(['/auth']);
+      }
+    });
 
     // Charger les projets du membre connecté
     this.projetService.getProjetsParMembre(email).subscribe({

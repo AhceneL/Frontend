@@ -29,15 +29,16 @@ export class ProfileComponent implements OnInit {
               private userService: UserService) {}
 
   ngOnInit(): void {
-    // Vérifier si l'utilisateur est connecté
     const email = this.authService.getTokenEmail();
 
     if (email) {
-      // Appel API pour récupérer le profil de l'utilisateur
       this.userService.getUserProfile(email).subscribe({
         next: (data) => {
           this.user = data;
-          this.originalUser = { ...this.user }; // pour restaurer en cas d’annulation
+          this.originalUser = { ...this.user }; // Pour restaurer en cas d'annulation
+
+          // Vérifiez ici que l'avatar est bien dans la réponse
+          console.log('Avatar récupéré:', this.user.avatar);
         },
         error: (err) => {
           console.error('Erreur lors de la récupération du profil:', err);
@@ -50,6 +51,7 @@ export class ProfileComponent implements OnInit {
       this.router.navigate(['/auth']);
     }
   }
+
 
   saveChanges(): void {
     // Envoi des données mises à jour au backend via l'API
