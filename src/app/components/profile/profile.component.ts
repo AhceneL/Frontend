@@ -21,7 +21,9 @@ export class ProfileComponent implements OnInit {
   avatars: string[] = [
 
     'assets/avatars/gestionnaire.jpg',
-    'assets/avatars/membre.jpg'
+    'assets/avatars/membre.jpg',
+    téléchargement (1).jpg,
+    téléchargement (1).jpg
   ];
 
   constructor(private router: Router,
