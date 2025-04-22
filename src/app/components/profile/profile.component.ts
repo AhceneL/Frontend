@@ -17,6 +17,13 @@ export class ProfileComponent implements OnInit {
   originalUser: any = null;
   email: string = ''; // Pour stocker l'email de l'utilisateur
 
+  // Liste des avatars disponibles
+  avatars: string[] = [
+
+    'assets/avatars/gestionnaire.jpg',
+    'assets/avatars/membre.jpg'
+  ];
+
   constructor(private router: Router,
               private authService: AuthService,
               private userService: UserService) {}
@@ -58,7 +65,6 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-
   cancel(): void {
     this.user = { ...this.originalUser }; // Restaurer les valeurs initiales
     this.router.navigate(['dashboard/' + localStorage.getItem('userRole')]);
@@ -66,5 +72,10 @@ export class ProfileComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  // Méthode pour changer l'avatar
+  changeAvatar(avatar: string): void {
+    this.user.avatar = avatar; // Mettre à jour l'avatar dans le profil
   }
 }

@@ -1,10 +1,25 @@
 <div class="profile-page">
   <div class="profile-card" *ngIf="user">
+    <!-- Affichage de l'avatar -->
     <img [src]="user?.avatar || 'assets/avatar-par-defaut.jpg'" class="profile-avatar" alt="Avatar" />
 
     <h2 class="profile-name">{{ user?.nom || 'Utilisateur' }}</h2>
     <p class="profile-email">{{ user?.email }}</p>
 
+    <!-- Sélection de l'avatar -->
+    <div class="avatar-selection">
+      <h3>Choisissez votre avatar</h3>
+      <div class="avatar-options">
+        <img *ngFor="let avatar of avatars"
+             [src]="avatar"
+             [alt]="'Avatar ' + avatar"
+             (click)="changeAvatar(avatar)"
+             [class.selected]="avatar === user.avatar"
+             class="avatar-img" />
+      </div>
+    </div>
+
+    <!-- Formulaire pour modifier les informations du profil -->
     <form class="profile-form">
       <div class="input-group">
         <label>Nom</label>
@@ -28,6 +43,7 @@
     </form>
   </div>
 
+  <!-- Si l'utilisateur n'est pas encore chargé -->
   <div *ngIf="!user" class="loading">
     <p>Chargement du profil...</p>
   </div>

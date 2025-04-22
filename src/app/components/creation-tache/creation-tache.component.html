@@ -23,7 +23,7 @@
 
     <!-- Sélection de la date limite -->
     <label for="taskDateLimite">Date limite</label>
-    <input type="date" id="taskDateLimite" [(ngModel)]="taskDateLimite" name="taskDateLimite" required />
+    <input type="date" id="taskDateLimite" [(ngModel)]="taskDateLimite" name="taskDateLimite" [min]="today" required />
 
     <!-- Sélection de l'état -->
     <label>État</label>

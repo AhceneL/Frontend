@@ -94,6 +94,8 @@ export class DetailProjetMembreComponent implements OnInit {
       return taches.filter((t: any) => t.statut?.toLowerCase() === 'en cours');
     } else if (this.filtreActif === 'termine') {
       return taches.filter((t: any) => t.statut?.toLowerCase() === 'terminé');
+    }else if (this.filtreActif === 'pasCommence') {
+      return taches.filter((t: any) => t.statut?.toLowerCase() === 'pas commencé');
     }
     return taches;  // Afficher toutes les tâches par défaut
   }

@@ -43,7 +43,7 @@
           id="start-date"
           name="startDate"
           [(ngModel)]="startDate"
-          required />
+          [min]="today"  />
       </div>
 
       <div class="input-group">
@@ -53,7 +53,7 @@
           id="end-date"
           name="endDate"
           [(ngModel)]="endDate"
-          required />
+          [min]="startDate"  />
       </div>
     </div>
 
@@ -66,6 +66,12 @@
         name="members"
         [(ngModel)]="members"
         placeholder="ex: membre1@example.com, membre2@example.com" />
+    </div>
+
+    <!-- Boutons -->
+    <div class="buttons">
+      <button class="save-button" (click)="saveProject()">💾 Enregistrer</button>
+      <button class="cancel-button" (click)="cancel()">❌ Annuler</button>
     </div>
   </form>
 </div>

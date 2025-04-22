@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProjetService } from '../../services/projet.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-creation-projet',
@@ -16,8 +16,15 @@ export class CreationProjetComponent {
   startDate: string = '';
   endDate: string = '';
   members: string = ''; // chaîne avec des emails séparés par virgule
+  today: string = ''; // Déclaration de la variable pour la date d'aujourd'hui
 
   constructor(private router: Router, private projetService: ProjetService) {}
+
+  ngOnInit(): void {
+    // Initialiser la variable today à la date d'aujourd'hui au format 'YYYY-MM-DD'
+    const todayDate = new Date();
+    this.today = todayDate.toISOString().split('T')[0];  // Format 'YYYY-MM-DD'
+  }
 
   saveProject() {
     const token = localStorage.getItem('token');
